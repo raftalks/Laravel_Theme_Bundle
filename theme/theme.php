@@ -11,7 +11,13 @@
  * @author          Raftalks
  * @license         http://opensource.org/licenses/gpl-3.0.html
  * @link            https://bitbucket.org/raftalks/laravel_theme/overview
- * @version         1.2 beta
+ * @version         1.3 beta
+ * 
+ * 
+ * // UPDATED CHANGES
+ * Added method to support custom javascript to be added dynamically to the theme
+ * Enabled partial views to access variables passed to main layout view without restriction. 
+ * 
  */
 
 
@@ -29,6 +35,13 @@ class Theme {
      * @var array
      */
     public $_theme_metadata = array();
+    
+    /**
+     * Custom JS scripts 
+     * 
+     * @var array
+     */
+    public $_custom_js_scripts = array();
     
     /**
      * Theme dataset
@@ -203,6 +216,7 @@ class Theme {
     public function theme_partial($partial, $data = array()) {
 
         $this->_theme_partials['partials'][$partial] = $data;
+        $this->_theme_data[$partial] = $data;
     }
     
     
@@ -215,11 +229,24 @@ class Theme {
     
     /**
      * Add a line to the start of the $theme['metadata'] string.
+     * 
+     * @param string $string
      */
     public function prepend_metadata($string){
         array_unshift($this->_theme_metadata, $string);
     }
     
+    /**
+     * Enables to embed custom js script into the theme and avoids repetition
+     * updated v1.3
+     *
+     * @param string #script
+     * @param string $unique_key
+     */
+    public function add_js_script($script, $unique_key){
+        
+        $this->_custom_js_scripts[$unique_key] = $script;
+    }
     
     
     public function add_asset($filename, $path = null) {
@@ -302,7 +329,7 @@ class Theme {
         
         $theme['metadata'] = $this->_metadata();
         $theme['title'] = $this->_title;
-        
+        $theme['custom_js'] = $this->_custom_js();
         
         if (isset($view)) {
            
@@ -348,13 +375,15 @@ class Theme {
      */
     public function render_partial($partial, $data = array()){
         
+        
         $theme_partials = $this->_theme_partials['partials'];
         
          $theme_name = $this->_theme_name;
          $base_path = path('public');
          $theme_path_relative = $this->_theme_path . DS . $theme_name ;
          $theme_path_absolute = $base_path . $theme_path_relative;
-            
+         
+         $theme_p = array();   
         if(!empty($theme_partials)){
             
             $theme_p = array_keys($theme_partials);
@@ -430,7 +459,23 @@ class Theme {
         }
     }
     
-    
+    /**
+     * return Custom JS scripts to be embeded
+     * updated v1.3
+     */
+     private function _custom_js(){
+         if(is_array($this->_custom_js_scripts)){
+             $script = implode("\n",$this->_custom_js_scripts);
+             
+             $script = "<script type='text/javascript'>
+                        $script
+                        </script>";
+             return $script;
+         }
+         
+         return FALSE;
+     }
+     
     /**
      * return Metadata as string
      * 
@@ -465,11 +510,17 @@ class Theme {
                  $theme_path_relative = $this->_theme_path . DS . $theme_name ;
                  $theme_path_absolute = $base_path . $theme_path_relative;
                  
-                 foreach($partials as $partial => $data){
+                 //updated below
+                 foreach($partials as $partial => $pdata){
+                     $tdata = $this->_theme_data; //updated v1.3
+                     $data = array_merge($tdata, $pdata); //updated v1.3
+                     
                      $p_name = "theme_".$partial;
                      if(!empty($data)){
+                        
                            $view_obj->nest($p_name, "path: " . $theme_path_absolute . "/partials/$partial.php", $data);
                      }else{
+                        
                            $view_obj->nest($p_name, "path: " . $theme_path_absolute . "/partials/$partial.php");
                      }
                  }
@@ -496,6 +547,7 @@ class Theme {
      
      $theme = IoC::resolve('Theme');
      
+
      return $theme->render_partial($partial, $data);
      
  }
