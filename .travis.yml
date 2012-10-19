@@ -2,3 +2,12 @@ language: php
 php:
   - "5.4"
   - "5.3"
+
+  before_install:
+  - cd ~/builds
+  - git clone git://github.com/laravel/laravel.git
+  - mv ./[GITHUB_USERNAME]/[GITHUB_REPO] ./laravel/bundles/[GITHUB_REPO]
+  - echo "<?php return array('[GITHUB_REPO]' => array('auto' => true));" > ./laravel/application/bundles.php
+  - cd ./laravel
+
+script: "php artisan test [GITHUB_REPO]"
