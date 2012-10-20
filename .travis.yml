@@ -1,9 +1,10 @@
 language: php
+
 php:
   - "5.4"
   - "5.3"
 
-  before_install:
+before_install:
   - cd ~/builds
   - git clone git://github.com/laravel/laravel.git
   - mv ./raftalks/Laravel_Theme_Bundle ./laravel/bundles/theme
