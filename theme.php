@@ -188,16 +188,16 @@ class Theme {
         
          $theme_name = $this->_theme_name;
          $base_path = path('public');
-         $theme_path_relative = $this->_theme_path . DS . $theme_name ;
+         $theme_path_relative = $this->_theme_path . '/' . $theme_name ;
          $theme_path_absolute = $base_path . $theme_path_relative;
           
-         $theme_partials_path_absolute =  $theme_path_absolute . DS. 'partials';
+         $theme_partials_path_absolute =  $theme_path_absolute . '/'. 'partials';
                
         foreach ($views as $view) {
               
-                 if (file_exists($tpath = $theme_partials_path_absolute.DS.$view. EXT)) {
+                 if (file_exists($tpath = $theme_partials_path_absolute.'/'.$view. EXT)) {
                         $view = "path: " . $tpath; //View::make("path: " . $tpath);
-                 } elseif (file_exists($tpath = $theme_partials_path_absolute.DS.$view. BLADE_EXT)) {
+                 } elseif (file_exists($tpath = $theme_partials_path_absolute.'/'.$view. BLADE_EXT)) {
                         $view = "path: " . $tpath; //View::make("path: " . $tpath);
             
                  }
@@ -237,7 +237,7 @@ class Theme {
     }
     
     /**
-     * Enables to embed custom js script into the theme and avoids repetition
+     * Enables to embed custom js script into the theme and avoi'/' repetition
      * updated v1.3
      *
      * @param string #script
@@ -261,18 +261,18 @@ class Theme {
         //directory path set
         if ($path == NULL) {
 
-            $directory = $theme_path_relative .DS. $theme . '/assets/';
+            $directory = $theme_path_relative .'/'. $theme . '/assets/';
         } else {
             $directory = $path;
         }
         
         
-        if(ends_with($filename, ".js")){
+        if(en'/'_with($filename, ".js")){
  
             $asset_file_path = $directory . "js/" . $filename;
         }
         
-        if(ends_with($filename,".css")){
+        if(en'/'_with($filename,".css")){
              
              $asset_file_path = $directory . "css/" . $filename;
         }
@@ -303,11 +303,11 @@ class Theme {
         $base_path = path('public'); // absolute path to public
         $theme_name = $this->_theme_name;
         
-        $theme_path_relative = $this->_theme_path . DS . $theme_name ;
+        $theme_path_relative = $this->_theme_path . '/' . $theme_name ;
         $theme_path_absolute = $base_path . $theme_path_relative;
         
         $useLayout = (!empty($this->_layout)) ? $this->_layout : $this->_default_layout;
-        $LayoutView_path_absolute = $theme_path_absolute .DS. "layouts" . DS ;
+        $LayoutView_path_absolute = $theme_path_absolute .'/'. "layouts" . '/' ;
         $LayoutFile_path_absolute = $LayoutView_path_absolute. $useLayout;
         
         if (file_exists($tpath = $LayoutFile_path_absolute . EXT)) {
@@ -380,7 +380,7 @@ class Theme {
         
          $theme_name = $this->_theme_name;
          $base_path = path('public');
-         $theme_path_relative = $this->_theme_path . DS . $theme_name ;
+         $theme_path_relative = $this->_theme_path . '/' . $theme_name ;
          $theme_path_absolute = $base_path . $theme_path_relative;
          
          $theme_p = array();   
@@ -401,9 +401,9 @@ class Theme {
             //try to load the partial of the theme
            
             
-             if (file_exists($tpath = $theme_path_absolute .DS. 'partials'.DS.$partial. EXT)) {
+             if (file_exists($tpath = $theme_path_absolute .'/'. 'partials'.'/'.$partial. EXT)) {
                   return  View::make("path: " . $tpath, $data);
-            } elseif (file_exists($tpath = $theme_path_absolute .DS. 'partials'.DS.$partial. BLADE_EXT)) {
+            } elseif (file_exists($tpath = $theme_path_absolute .'/'. 'partials'.'/'.$partial. BLADE_EXT)) {
                   return View::make("path: " . $tpath, $data);
             }
             
@@ -416,9 +416,9 @@ class Theme {
                 return render($partial, $data);
             }else{
                 //check if partial is available from theme
-                 if (file_exists($tpath = $theme_path_absolute .DS. 'partials'.DS.$partial. EXT)) {
+                 if (file_exists($tpath = $theme_path_absolute .'/'. 'partials'.'/'.$partial. EXT)) {
                   return  View::make("path: " . $tpath, $data);
-                } elseif (file_exists($tpath = $theme_path_absolute .DS. 'partials'.DS.$partial. BLADE_EXT)) {
+                } elseif (file_exists($tpath = $theme_path_absolute .'/'. 'partials'.'/'.$partial. BLADE_EXT)) {
                       return View::make("path: " . $tpath, $data);
                 }
                 
@@ -445,7 +445,7 @@ class Theme {
         
         
         //load theme_function file
-        $theme_function_file = $path .DS. 'theme_function.php';
+        $theme_function_file = $path .'/'. 'theme_function.php';
         
          
           
@@ -507,7 +507,7 @@ class Theme {
                  
                  $theme_name = $this->_theme_name;
                  $base_path = path('public');
-                 $theme_path_relative = $this->_theme_path . DS . $theme_name ;
+                 $theme_path_relative = $this->_theme_path . '/' . $theme_name ;
                  $theme_path_absolute = $base_path . $theme_path_relative;
                  
                  //updated below
