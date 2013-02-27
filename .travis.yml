@@ -5,10 +5,8 @@ php:
   - "5.3"
 
 before_install:
-  - cd ~/builds
-  - ls
+  - cd ../../
   - git clone git://github.com/laravel/laravel.git
-  - ls
   - mv ./raftalks/Laravel_Theme_Bundle ./laravel/bundles/theme
   - echo "<?php return array('theme' => array('auto' => true));" > ./laravel/application/bundles.php
   - cd ./laravel
